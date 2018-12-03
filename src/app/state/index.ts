@@ -1,15 +1,29 @@
 import { TodoState, SelectableTodo } from './reducer';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { stringify } from 'querystring';
 
 const getTodoState = createFeatureSelector<TodoState>('todos');
-export const getTodos = () =>
+
+const getTodos =
   createSelector(
     getTodoState,
     state => state.todos);
+const getFilter = createSelector(
+  getTodoState,
+  state => state.filter);
+const getSelectedTodoIds = createSelector(
+  getTodoState,
+  state => state.selectedTodos);
 
-export const getSelectedTodos = () =>
-  createSelector(getTodoState,
-    state => state.todos
-      .map(todo => new SelectableTodo(todo,
-        state.selectedTodos
-          .some(selectedTodo => todo.id === selectedTodo))));
+const getFilteredTodos = createSelector(
+  getTodos,
+  getFilter,
+  (todos, filter) => todos.filter(todo => todo.text.includes(filter) || todo.id.includes(filter))
+);
+
+export const getFilteredSelectableTodos = createSelector(
+  getFilteredTodos,
+  getSelectedTodoIds,
+  (todos, selectedTodoIds) => todos
+    .map(todo => new SelectableTodo(todo,
+      selectedTodoIds.some(selectedTodo => todo.id === selectedTodo))));

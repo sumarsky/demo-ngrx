@@ -1,10 +1,10 @@
 import { TodoActionTypes, TodoActions } from './actions';
 
 export class Todo {
-  id: number;
+  id: string;
   text: string;
 
-  constructor(_id: number, _text: string) {
+  constructor(_id: string, _text: string) {
     this.id = _id;
     this.text = _text;
   }
@@ -19,11 +19,13 @@ export class SelectableTodo extends Todo {
 
 export interface TodoState {
   todos: Array<Todo>;
-  selectedTodos: Array<number>;
+  selectedTodos: Array<string>;
+  filter: string;
 }
 export const initialState: TodoState = {
   todos: [],
-  selectedTodos: [5]
+  selectedTodos: [],
+  filter: ''
 };
 
 export function todoReducer(state = initialState, action: TodoActions): TodoState {
@@ -37,7 +39,7 @@ export function todoReducer(state = initialState, action: TodoActions): TodoStat
       };
 
     case TodoActionTypes.ToggleSelect:
-      let foo: Array<number>;
+      let foo: Array<string>;
       if (action.payload[1]) {
         foo = state.selectedTodos.concat(action.payload[0].id);
       } else {
@@ -53,6 +55,12 @@ export function todoReducer(state = initialState, action: TodoActions): TodoStat
       return {
         ...state,
         selectedTodos: action.payload.valueOf() ? state.todos.map(x => x.id) : []
+      };
+
+    case TodoActionTypes.AddFilter:
+      return {
+        ...state,
+        filter: action.payload
       };
 
     default:
