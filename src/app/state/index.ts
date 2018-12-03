@@ -1,6 +1,5 @@
 import { TodoState, SelectableTodo } from './reducer';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import { stringify } from 'querystring';
 
 const getTodoState = createFeatureSelector<TodoState>('todos');
 
