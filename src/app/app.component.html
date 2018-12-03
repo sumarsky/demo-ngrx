@@ -1,0 +1,6 @@
+<input type="checkbox" (change)="all$.next($event.target.checked)">select all
+<div *ngFor="let todo of todos$ | async">
+  <input type="checkbox" (change)="click$.next({todo:todo,select:$event.target.checked})" [checked]="todo.isSelected">
+  {{todo.id}} -
+  {{todo.text}}
+</div>
