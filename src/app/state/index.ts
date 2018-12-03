@@ -3,10 +3,9 @@ import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 const getTodoState = createFeatureSelector<TodoState>('todos');
 
-const getTodos =
-  createSelector(
-    getTodoState,
-    state => state.todos);
+const getTodos = createSelector(
+  getTodoState,
+  state => state.todos);
 const getFilter = createSelector(
   getTodoState,
   state => state.filter);
